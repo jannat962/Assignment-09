@@ -1,0 +1,140 @@
+create database employeemanage;
+show databases;
+
+use employeemanage;
+
+select *from employeemanage;
+select * from login;
+select *from employee;
+
+
+use employeemanage;
+create table employee(name varchar(20), fname varchar(20), dob varchar(30), salary varchar(20), address varchar(100), phone varchar(20), email varchar(40), education varchar(20), destination varchar(30), aadhar varchar(25), empId varchar(15));
+use carinfo;
+select *from cardatabase;
+create table Toyota(name varchar(20), est varchar(30), prize varchar(20), model varchar(100));
+select *from Toyota;
+use cardatabase;
+INSERT INTO Toyota values ( 'Toyota X', 2003, 120000, 'Corolla' );
+INSERT INTO Toyota values ( 'Toyota X', 2003, 120000, 'Corolla' );
+INSERT INTO Toyota values ( 'Toyota Y', 2013, 210000, 'Hi-Ac' );
+INSERT INTO Toyota values ( 'Toyota Z', 2015, 310000, 'Supra' );
+INSERT INTO Toyota values ( 'Toyota W', 2018, 450000, 'Prius' );
+INSERT INTO Toyota values ( 'Toyota Q', 2023, 560000, 'Crown' );
+
+select 'name' AS 'Car_name' from Toyota;
+select 'name' , 'model'  from Toyota;
+
+select *from Toyota
+Where `model` = 'Supra' AND `est` = 2015;
+
+select *from Toyota order by `prize` desc;
+
+-- Example 1: Names starting with 'A'
+SELECT * FROM employee WHERE  fname LIKE 'A%';
+
+-- Example 2: Names ending with 'y'
+SELECT * FROM employee WHERE lname LIKE '%y';
+
+-- Example 3: Names containing 'o'
+SELECT * FROM employee WHERE fname LIKE '%o%';
+
+-- Example 4: Names starting with 'J' and ending with 'n'
+SELECT * FROM employee WHERE fname LIKE 'J%n';
+
+-- Example 5: Names containing 'a' and 'e' with any characters in between
+SELECT * FROM  employee WHERE first_name LIKE '%a%e%';
+
+-- Example 6: Names starting with 'M' or 'N'
+SELECT * FROM employee WHERE first_name LIKE 'M%' OR first_name LIKE 'N%';
+
+-- Example 7: Names not starting with 'S'
+SELECT * FROM employee WHERE first_name NOT LIKE 'S%';
+
+-- Example 8: Names containing exactly 4 characters
+SELECT * FROM employee WHERE first_name LIKE '____';
+
+-- Example 9: Names containing 'r' followed by any character, then 'a'
+SELECT * FROM employee WHERE first_name LIKE '%r_a%';
+
+-- Example 10: Names starting with 'A' and having 3 characters
+SELECT * FROM employee WHERE first_name LIKE 'A__';
+
+CREATE TABLE workers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    salary DECIMAL(10, 2)
+);
+
+select *from workers decs;
+
+
+INSERT INTO workers (first_name, last_name, salary) VALUES
+('John', 'Doe', 50000),
+('Jane', 'Smith', 60000),
+('David', 'Johnson', 70000),
+('Emily', 'Williams', 55000),
+('Michael', 'Brown', 75000);
+
+
+SELECT *
+FROM workers
+WHERE salary > (SELECT AVG(salary) FROM workers);
+
+INSERT INTO workers (first_name, last_name, salary) VALUES
+('Adam', 'Iren', 58000),
+('Emma', 'Olive', 62000),
+('Isaac', 'Eliot', 59000),
+('Oscar', 'Noel', 61000),
+('Ava', 'Eva', 57000);
+
+SELECT * FROM workers 
+WHERE first_name REGEXP '^[aeiouAEIOU]' AND last_name REGEXP '[aeiouAEIOU]$';
+
+SELECT * FROM workers 
+WHERE salary BETWEEN (SELECT MIN(salary) FROM workers) 
+AND (SELECT MAX(salary) FROM workers);
+
+CREATE TABLE salary_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    salary DECIMAL(10, 2),
+    worker_id INT,
+    status ENUM('paid', 'unpaid')
+);
+
+INSERT INTO salary_history (salary, worker_id, status) VALUES
+(5000, 1, 'paid'),
+(5500, 2, 'paid'),
+(6000, 3, 'paid'),
+(5200, 1, 'unpaid'),
+(5800, 2, 'paid');
+
+select *from salary_history decs;
+
+SELECT workers.first_name, workers.last_name, SUM(salary_history.salary) AS total_paid
+FROM workers
+JOIN salary_history ON workers.id = salary_history.worker_id
+WHERE salary_history.status = 'paid'
+GROUP BY workers.id;
+
+CREATE TABLE menu (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    parent_id INT
+);
+select *from menu decs;
+
+INSERT INTO menu (name, parent_id) VALUES
+('Home', NULL),
+('About Us', NULL),
+('Products', NULL),
+('Contact Us', NULL),
+('Company Profile', 2),
+('Our Team', 2),
+('Product A', 3),
+('Product B', 3);
+
+SELECT m1.name AS parent_menu, m2.name AS child_menu
+FROM menu m1
+LEFT JOIN menu m2 ON m1.id = m2.parent_id;
